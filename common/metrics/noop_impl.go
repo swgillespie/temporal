@@ -66,9 +66,14 @@ func (*noopMetricsHandler) Histogram(string, MetricUnit) HistogramIface {
 	return NoopHistogramMetricFunc
 }
 
+func (*noopMetricsHandler) Event(string) EventIface {
+	return NoopEventFunc
+}
+
 func (*noopMetricsHandler) Stop(log.Logger) {}
 
 var NoopCounterMetricFunc = CounterFunc(func(i int64, t ...Tag) {})
 var NoopGaugeMetricFunc = GaugeFunc(func(f float64, t ...Tag) {})
 var NoopTimerMetricFunc = TimerFunc(func(d time.Duration, t ...Tag) {})
 var NoopHistogramMetricFunc = HistogramFunc(func(i int64, t ...Tag) {})
+var NoopEventFunc = EventFunc(func(t map[string]any) {})

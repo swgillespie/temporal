@@ -41,6 +41,10 @@ type (
 	timerDefinition struct {
 		metricDefinition
 	}
+
+	eventDefinition struct {
+		metricDefinition
+	}
 )
 
 func NewTimerDef(name string, opts ...Option) timerDefinition {
@@ -83,6 +87,12 @@ func NewGaugeDef(name string, opts ...Option) gaugeDefinition {
 	return gaugeDefinition{def}
 }
 
+func NewEventDef(name string) eventDefinition {
+	def := newMetricDefinition(name)
+	globalRegistry.register(def)
+	return eventDefinition{def}
+}
+
 func (d histogramDefinition) With(handler Handler) HistogramIface {
 	return handler.Histogram(d.name, d.unit)
 }
@@ -97,4 +107,8 @@ func (d gaugeDefinition) With(handler Handler) GaugeIface {
 
 func (d timerDefinition) With(handler Handler) TimerIface {
 	return handler.Timer(d.name)
+}
+
+func (d eventDefinition) With(handler Handler) EventIface {
+	return handler.Event(d.name)
 }

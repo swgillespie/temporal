@@ -118,6 +118,10 @@ func (tmp *tallyMetricsHandler) Histogram(histogram string, unit MetricUnit) His
 	})
 }
 
+func (tmp *tallyMetricsHandler) Event(event string) EventIface {
+	return EventFunc(func(m map[string]any) {})
+}
+
 func (*tallyMetricsHandler) Stop(log.Logger) {}
 
 func tagsToMap(t1 []Tag, e excludeTags) map[string]string {

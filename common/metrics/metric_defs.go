@@ -1199,4 +1199,7 @@ var (
 	MemoryStackGauge     = NewGaugeDef("memory_stack")
 	NumGCCounter         = NewBytesHistogramDef("memory_num_gc")
 	GcPauseMsTimer       = NewTimerDef("memory_gc_pause_ms")
+
+	// Events
+	MutableStateStats = NewEventDef("mutable_state_stats")
 )

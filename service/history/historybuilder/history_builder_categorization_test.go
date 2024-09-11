@@ -64,6 +64,10 @@ func (h StubHandler) Histogram(_ string, _ metrics.MetricUnit) metrics.Histogram
 	return nil
 }
 
+func (h StubHandler) Event(_ string) metrics.EventIface {
+	return nil
+}
+
 func (h StubHandler) Stop(_ log.Logger) {}
 
 func TestHistoryBuilder_IsDirty(t *testing.T) {

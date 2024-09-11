@@ -142,5 +142,9 @@ func (c *CaptureHandler) Histogram(name string, unit metrics.MetricUnit) metrics
 	return metrics.HistogramFunc(func(v int64, tags ...metrics.Tag) { c.record(name, v, unit, tags...) })
 }
 
+func (c *CaptureHandler) Event(name string) metrics.EventIface {
+	return metrics.EventFunc(func(v map[string]any) {})
+}
+
 // Stop implements [metrics.Handler.Stop].
 func (*CaptureHandler) Stop(log.Logger) {}

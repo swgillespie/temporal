@@ -73,6 +73,20 @@ func (mr *MockHandlerMockRecorder) Counter(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Counter", reflect.TypeOf((*MockHandler)(nil).Counter), arg0)
 }
 
+// Event mocks base method.
+func (m *MockHandler) Event(arg0 string) EventIface {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Event", arg0)
+	ret0, _ := ret[0].(EventIface)
+	return ret0
+}
+
+// Event indicates an expected call of Event.
+func (mr *MockHandlerMockRecorder) Event(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Event", reflect.TypeOf((*MockHandler)(nil).Event), arg0)
+}
+
 // Gauge mocks base method.
 func (m *MockHandler) Gauge(arg0 string) GaugeIface {
 	m.ctrl.T.Helper()
@@ -303,4 +317,39 @@ func (mr *MockHistogramIfaceMockRecorder) Record(arg0 interface{}, arg1 ...inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Record", reflect.TypeOf((*MockHistogramIface)(nil).Record), varargs...)
+}
+
+// MockEventIface is a mock of EventIface interface.
+type MockEventIface struct {
+	ctrl     *gomock.Controller
+	recorder *MockEventIfaceMockRecorder
+}
+
+// MockEventIfaceMockRecorder is the mock recorder for MockEventIface.
+type MockEventIfaceMockRecorder struct {
+	mock *MockEventIface
+}
+
+// NewMockEventIface creates a new mock instance.
+func NewMockEventIface(ctrl *gomock.Controller) *MockEventIface {
+	mock := &MockEventIface{ctrl: ctrl}
+	mock.recorder = &MockEventIfaceMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockEventIface) EXPECT() *MockEventIfaceMockRecorder {
+	return m.recorder
+}
+
+// Record mocks base method.
+func (m *MockEventIface) Record(arg0 map[string]any) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Record", arg0)
+}
+
+// Record indicates an expected call of Record.
+func (mr *MockEventIfaceMockRecorder) Record(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Record", reflect.TypeOf((*MockEventIface)(nil).Record), arg0)
 }

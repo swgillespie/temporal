@@ -57,6 +57,9 @@ type (
 		// Histogram obtains a histogram for the given name.
 		Histogram(string, MetricUnit) HistogramIface
 
+		// Event obtains an event generator for the given name.
+		Event(string) EventIface
+
 		Stop(log.Logger)
 	}
 
@@ -87,13 +90,20 @@ type (
 		Record(int64, ...Tag)
 	}
 
+	// EventIface records an event.
+	EventIface interface {
+		Record(map[string]any)
+	}
+
 	CounterFunc   func(int64, ...Tag)
 	GaugeFunc     func(float64, ...Tag)
 	TimerFunc     func(time.Duration, ...Tag)
 	HistogramFunc func(int64, ...Tag)
+	EventFunc     func(map[string]any)
 )
 
 func (c CounterFunc) Record(v int64, tags ...Tag)       { c(v, tags...) }
 func (c GaugeFunc) Record(v float64, tags ...Tag)       { c(v, tags...) }
 func (c TimerFunc) Record(v time.Duration, tags ...Tag) { c(v, tags...) }
 func (c HistogramFunc) Record(v int64, tags ...Tag)     { c(v, tags...) }
+func (c EventFunc) Record(v map[string]any)             { c(v) }

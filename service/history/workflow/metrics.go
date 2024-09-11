@@ -93,6 +93,9 @@ func emitMutableStateStatus(
 		metrics.TaskCount.With(metricsHandler).
 			Record(int64(taskCount), metrics.TaskCategoryTag(category))
 	}
+
+	event := eventForMutableStateStats(stats)
+	metrics.MutableStateStats.With(metricsHandler).Record(event)
 }
 
 func emitWorkflowCompletionStats(
@@ -137,4 +140,40 @@ func GetPerTaskQueueFamilyScope(
 		config.BreakdownMetricsByTaskQueue(namespaceName.String(), taskQueueFamily, enumspb.TASK_QUEUE_TYPE_WORKFLOW),
 		tags...,
 	)
+}
+
+func eventForMutableStateStats(stats *persistence.MutableStateStatistics) map[string]any {
+	event := map[string]any{
+		"total_size":                          stats.TotalSize,
+		"execution_info_size":                 stats.ExecutionInfoSize,
+		"execution_state_size":                stats.ExecutionStateSize,
+		"activity_info_size":                  stats.ActivityInfoSize,
+		"activity_info_count":                 stats.ActivityInfoCount,
+		"total_activity_count":                stats.TotalActivityCount,
+		"timer_info_size":                     stats.TimerInfoSize,
+		"timer_info_count":                    stats.TimerInfoCount,
+		"total_user_timer_count":              stats.TotalUserTimerCount,
+		"child_info_size":                     stats.ChildInfoSize,
+		"child_info_count":                    stats.ChildInfoCount,
+		"total_child_execution_count":         stats.TotalChildExecutionCount,
+		"request_cancel_info_size":            stats.RequestCancelInfoSize,
+		"request_cancel_info_count":           stats.RequestCancelInfoCount,
+		"total_request_cancel_external_count": stats.TotalRequestCancelExternalCount,
+		"signal_info_size":                    stats.SignalInfoSize,
+		"signal_info_count":                   stats.SignalInfoCount,
+		"total_signal_external_count":         stats.TotalSignalExternalCount,
+		"signal_request_id_size":              stats.SignalRequestIDSize,
+		"signal_request_id_count":             stats.SignalRequestIDCount,
+		"total_signal_count":                  stats.TotalSignalCount,
+		"buffered_events_size":                stats.BufferedEventsSize,
+		"buffered_events_count":               stats.BufferedEventsCount,
+		"history_size_diff":                   stats.HistoryStatistics.SizeDiff,
+		"history_count_diff":                  stats.HistoryStatistics.CountDiff,
+	}
+
+	for category, taskCount := range stats.TaskCountByCategory {
+		event["task_count_"+category] = taskCount
+	}
+
+	return event
 }

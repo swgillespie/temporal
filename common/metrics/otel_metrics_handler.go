@@ -200,6 +200,10 @@ func (omp *otelMetricsHandler) Histogram(histogram string, unit MetricUnit) Hist
 	})
 }
 
+func (omp *otelMetricsHandler) Event(name string) EventIface {
+	return EventFunc(func(m map[string]any) {})
+}
+
 func (omp *otelMetricsHandler) Stop(l log.Logger) {
 	omp.provider.Stop(l)
 }
